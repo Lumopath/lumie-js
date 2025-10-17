@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Metric {
+  id          Int      @id @default(autoincrement())
+  name        String
+  value       Float
+  unit        String?
+  description String?
+  category    String
+  recordedAt  DateTime @map("recorded_at")
+  status      String   @default("inactive")
+  companyName String?  @map("company_name")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("metrics")
+}
+

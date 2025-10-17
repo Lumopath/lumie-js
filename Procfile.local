@@ -1,0 +1,6 @@
+# Lumie JS - Development Processes
+# Run with: ./start or overmind start -f Procfile.local
+
+api: sleep 1 && cd api-js && npm run dev
+web: cd web && npm run dev
+

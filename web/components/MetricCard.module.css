@@ -1,0 +1,96 @@
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border-left: 4px solid var(--category-color);
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.category {
+  font-size: 12px;
+  padding: 4px 10px;
+  background: var(--category-bg);
+  color: var(--category-color);
+  border-radius: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.description {
+  font-size: 14px;
+  color: #718096;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Category color schemes */
+.card.revenue {
+  --category-color: #10b981;
+  --category-bg: #d1fae5;
+}
+
+.card.customers {
+  --category-color: #3b82f6;
+  --category-bg: #dbeafe;
+}
+
+.card.growth {
+  --category-color: #8b5cf6;
+  --category-bg: #ede9fe;
+}
+
+.card.financial {
+  --category-color: #f59e0b;
+  --category-bg: #fef3c7;
+}
+
+.card.engagement {
+  --category-color: #ec4899;
+  --category-bg: #fce7f3;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+
+  .value {
+    font-size: 28px;
+  }
+
+  .name {
+    font-size: 15px;
+  }
+}
+

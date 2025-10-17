@@ -1,0 +1,21 @@
+{
+  "name": "lumie-js",
+  "version": "1.0.0",
+  "description": "Business metrics dashboard with Node.js/TypeScript backend and Next.js frontend",
+  "private": true,
+  "scripts": {
+    "dev": "./start",
+    "setup": "cd api-js && npm install && npm run setup && cd ../web && npm install",
+    "setup:api": "cd api-js && npm install && npm run setup",
+    "setup:web": "cd web && npm install",
+    "start:api": "cd api-js && npm run dev",
+    "start:web": "cd web && npm run dev",
+    "build:api": "cd api-js && npm run build",
+    "build:web": "cd web && npm run build",
+    "build": "npm run build:api && npm run build:web"
+  },
+  "keywords": ["dashboard", "metrics", "graphql", "nextjs"],
+  "author": "",
+  "license": "MIT"
+}
+
