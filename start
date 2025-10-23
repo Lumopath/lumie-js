@@ -24,6 +24,45 @@ esac
 
 echo -e "${BLUE}📍 Detected OS: ${MACHINE}${NC}\n"
 
+# Function to setup Node.js version
+setup_node_version() {
+    local NODE_VERSION="18.18.0"
+
+    # Check if nvm is available
+    if [ -s "$NVM_DIR/nvm.sh" ]; then
+        echo -e "${YELLOW}📦 Setting up Node.js version...${NC}\n"
+        source "$NVM_DIR/nvm.sh"
+
+        # Check if version is installed
+        if ! nvm ls "$NODE_VERSION" &>/dev/null; then
+            echo -e "${GREEN}Installing Node.js ${NODE_VERSION} via nvm...${NC}"
+            nvm install "$NODE_VERSION"
+        else
+            echo -e "${GREEN}✓ Node.js ${NODE_VERSION} already installed${NC}"
+        fi
+
+        # Use the version
+        nvm use "$NODE_VERSION"
+        echo -e "${GREEN}✓ Using Node.js $(node --version)${NC}\n"
+    elif command -v nvm &> /dev/null; then
+        echo -e "${YELLOW}📦 Setting up Node.js version...${NC}\n"
+
+        # Check if version is installed
+        if ! nvm ls "$NODE_VERSION" &>/dev/null; then
+            echo -e "${GREEN}Installing Node.js ${NODE_VERSION} via nvm...${NC}"
+            nvm install "$NODE_VERSION"
+        else
+            echo -e "${GREEN}✓ Node.js ${NODE_VERSION} already installed${NC}"
+        fi
+
+        # Use the version
+        nvm use "$NODE_VERSION"
+        echo -e "${GREEN}✓ Using Node.js $(node --version)${NC}\n"
+    else
+        echo -e "${YELLOW}⚠️  nvm not found, using system Node.js $(node --version)${NC}\n"
+    fi
+}
+
 # Function to install dependencies
 install_dependencies() {
     echo -e "${YELLOW}📦 Checking dependencies...${NC}\n"
@@ -101,6 +140,9 @@ install_process_manager() {
 
     echo ""
 }
+
+# Setup Node.js version if nvm is available
+setup_node_version
 
 # Install dependencies
 install_dependencies
