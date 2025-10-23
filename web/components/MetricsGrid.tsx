@@ -53,7 +53,7 @@ export default function MetricsGrid() {
   return (
     <div className={styles.container}>
       {groupedMetrics.map(({ category, metrics }) => (
-        <div key={category} className={styles.categorySection}>
+        <div className={styles.categorySection}>
           <h2 className={styles.categoryTitle}>{category}</h2>
           <div className={styles.grid}>
             {metrics.map(metric => (

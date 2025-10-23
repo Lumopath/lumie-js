@@ -15,11 +15,14 @@
   margin: 0 0 24px 0;
   text-transform: capitalize;
   letter-spacing: -0.5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  display: flex;
   gap: 24px;
 }
 

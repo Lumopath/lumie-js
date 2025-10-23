@@ -5,6 +5,9 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   border-left: 4px solid var(--category-color);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .card .card:hover {
@@ -42,7 +45,7 @@
 .value {
   font-size: 32px;
   font-weight: 700;
-  color: #2d3748;
+  color: white;
   margin-bottom: 12px;
   line-height: 1.2;
 }

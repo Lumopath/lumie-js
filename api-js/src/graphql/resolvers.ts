@@ -42,6 +42,7 @@ export const resolvers = {
       const { PrismaClient } = await import("@prisma/client");
       const prisma = new PrismaClient();
       const allMetrics = await prisma.metric.findMany({
+        where: { companyName: companyName },
         orderBy: {
           recordedAt: 'desc'
         }
