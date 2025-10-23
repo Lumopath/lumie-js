@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Lumie JS Startup Script
-# This script starts both the API and Web frontend using overmind or foreman
+# This script installs dependencies, installs a process manager, and starts services
 
 set -e
 
@@ -9,28 +9,119 @@ set -e
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 echo -e "${GREEN}🚀 Starting Lumie JS...${NC}\n"
 
-# Check if overmind is installed
+# Detect OS
+OS="$(uname -s)"
+case "${OS}" in
+    Linux*)     MACHINE=Linux;;
+    Darwin*)    MACHINE=Mac;;
+    *)          MACHINE="UNKNOWN:${OS}"
+esac
+
+echo -e "${BLUE}📍 Detected OS: ${MACHINE}${NC}\n"
+
+# Function to install dependencies
+install_dependencies() {
+    echo -e "${YELLOW}📦 Checking dependencies...${NC}\n"
+
+    # Install API dependencies
+    if [ ! -d "api-js/node_modules" ]; then
+        echo -e "${GREEN}Installing API dependencies...${NC}"
+        cd api-js && npm install && cd ..
+    else
+        echo -e "${GREEN}✓ API dependencies already installed${NC}"
+    fi
+
+    # Install Web dependencies
+    if [ ! -d "web/node_modules" ]; then
+        echo -e "${GREEN}Installing Web dependencies...${NC}"
+        cd web && npm install && cd ..
+    else
+        echo -e "${GREEN}✓ Web dependencies already installed${NC}"
+    fi
+
+    echo ""
+}
+
+# Function to install process manager
+install_process_manager() {
+    # Check if any process manager is already installed
+    if command -v overmind &> /dev/null || command -v hivemind &> /dev/null; then
+        return 0
+    fi
+
+    echo -e "${YELLOW}📥 Installing process manager...${NC}\n"
+
+    if [ "$MACHINE" = "Mac" ]; then
+        # macOS - try brew first
+        if command -v brew &> /dev/null; then
+            echo -e "${GREEN}Installing overmind via Homebrew...${NC}"
+            brew install overmind tmux
+        elif command -v go &> /dev/null; then
+            echo -e "${GREEN}Installing overmind via Go...${NC}"
+            go install github.com/DarthSim/overmind/v2@latest
+        else
+            echo -e "${RED}❌ Neither Homebrew nor Go found. Installing Homebrew...${NC}"
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            brew install overmind tmux
+        fi
+    elif [ "$MACHINE" = "Linux" ]; then
+        # Linux - try to install hivemind (lighter weight)
+        if command -v go &> /dev/null; then
+            echo -e "${GREEN}Installing hivemind via Go...${NC}"
+            go install github.com/DarthSim/hivemind@latest
+            # Ensure Go bin is in PATH
+            export PATH="$PATH:$(go env GOPATH)/bin"
+        else
+            echo -e "${YELLOW}Go not found. Installing Go...${NC}"
+            # Detect package manager
+            if command -v apt-get &> /dev/null; then
+                sudo apt-get update && sudo apt-get install -y golang-go
+            elif command -v yum &> /dev/null; then
+                sudo yum install -y golang
+            elif command -v dnf &> /dev/null; then
+                sudo dnf install -y golang
+            elif command -v pacman &> /dev/null; then
+                sudo pacman -S --noconfirm go
+            else
+                echo -e "${RED}❌ Could not detect package manager. Please install Go manually.${NC}"
+                exit 1
+            fi
+            go install github.com/DarthSim/hivemind@latest
+            export PATH="$PATH:$(go env GOPATH)/bin"
+        fi
+    else
+        echo -e "${RED}❌ Unsupported OS: ${MACHINE}${NC}"
+        exit 1
+    fi
+
+    echo ""
+}
+
+# Install dependencies
+install_dependencies
+
+# Install process manager if needed
+install_process_manager
+
+# Start services with available process manager
+echo -e "${GREEN}🎯 Starting services...${NC}\n"
+
 if command -v overmind &> /dev/null; then
     echo -e "${GREEN}Using overmind${NC}"
     exec overmind start -f Procfile.local
-# Check if foreman is installed
-elif command -v foreman &> /dev/null; then
-    echo -e "${GREEN}Using foreman${NC}"
-    exec foreman start -f Procfile.local
-# Check if hivemind is installed
 elif command -v hivemind &> /dev/null; then
     echo -e "${GREEN}Using hivemind${NC}"
     exec hivemind Procfile.local
+elif command -v foreman &> /dev/null; then
+    echo -e "${GREEN}Using foreman${NC}"
+    exec foreman start -f Procfile.local
 else
-    echo -e "${YELLOW}⚠️  No process manager found (overmind, foreman, or hivemind)${NC}"
-    echo -e "${YELLOW}Installing overmind is recommended for the best experience:${NC}"
-    echo -e "  ${GREEN}brew install overmind${NC} (macOS)"
-    echo -e "  ${GREEN}go install github.com/DarthSim/overmind/v2@latest${NC} (with Go)\n"
-
+    echo -e "${YELLOW}⚠️  No process manager available after installation attempt${NC}"
     echo -e "${YELLOW}Falling back to running processes in background...${NC}\n"
 
     # Fallback: run processes manually
