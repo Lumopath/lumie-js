@@ -25,7 +25,13 @@ function isEnabled(metric: any): boolean {
   const hasEnabled = status.includes('is Enabled') ||
                      status.includes('is Active') ||
                      status.includes('is enabled') ||
-                     status.includes('is active');
+                     status.includes('is active') ||
+                     status.includes('ACTIVE') ||
+                     status.includes('AcTive') ||
+                     status.includes('Active') ||
+                     status.includes('Enabled') ||
+                     status.includes('active') ||
+                     status.includes('enabled');
   const hasDisabled = status.includes('Disabled') ||
                       status.includes('disabled') ||
                       status.includes('inactive') ||
@@ -39,15 +45,11 @@ function isEnabled(metric: any): boolean {
 export const resolvers = {
   Query: {
     metrics: async (_: any, { companyName }: { companyName: string }) => {
-      const { PrismaClient } = await import("@prisma/client");
-      const prisma = new PrismaClient();
       const allMetrics = await prisma.metric.findMany({
-        where: { companyName: companyName },
         orderBy: {
           recordedAt: 'desc'
         }
       });
-      console.log(allMetrics.length);
 
       const companyMetrics = allMetrics.filter(m => m.companyName === companyName);
 
