@@ -39,19 +39,20 @@ function isEnabled(metric: any): boolean {
 export const resolvers = {
   Query: {
     metrics: async (_: any, { companyName }: { companyName: string }) => {
+      const { PrismaClient } = await import("@prisma/client");
+      const prisma = new PrismaClient();
       const allMetrics = await prisma.metric.findMany({
-        where: {
-          companyName: companyName
-        },
         orderBy: {
           recordedAt: 'desc'
         }
       });
+      console.log(allMetrics.length);
 
-      // Filter for enabled metrics and get latest version of each metric name/category combo
+      const companyMetrics = allMetrics.filter(m => m.companyName === companyName);
+
       const metricMap = new Map<string, any>();
 
-      for (const metric of allMetrics) {
+      for (const metric of companyMetrics) {
         if (!isEnabled(metric)) continue;
 
         const key = `${metric.category}-${metric.name}`;
@@ -84,13 +85,13 @@ export const resolvers = {
       return formatValue(parent.value, parent.unit);
     },
     recordedAt: (parent: any) => {
-      return parent.recordedAt.toISOString();
+      return new Date(parent.recordedAt).toISOString();
     },
     createdAt: (parent: any) => {
-      return parent.createdAt.toISOString();
+      return new Date(parent.createdAt).toISOString();
     },
     updatedAt: (parent: any) => {
-      return parent.updatedAt.toISOString();
+      return new Date(parent.updatedAt).toISOString();
     }
   }
 };

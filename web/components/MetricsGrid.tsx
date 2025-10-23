@@ -13,8 +13,8 @@ export default function MetricsGrid() {
     queryFn: async () => {
       return graphQLClient.request(GET_METRICS, { companyName: 'Lumopath' });
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchInterval: 30 * 1000, // Refetch every 30 seconds
+    staleTime: 0,
+    refetchInterval: 1000,
   });
 
   if (isLoading) {
