@@ -24,8 +24,6 @@ out/
 # Databases
 *.db
 *.db-journal
-*.sqlite
-*.sqlite3
 
 # Logs
 logs/
