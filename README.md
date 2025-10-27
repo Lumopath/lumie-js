@@ -7,8 +7,7 @@ A modern business metrics dashboard built with Node.js/TypeScript backend and Ne
 ```
 lumie-js/
 ├── api-js/          # Node.js/TypeScript backend with GraphQL & SSE
-├── web/             # Next.js frontend with React Query
-└── lumie-rails/     # Original Rails implementation (reference)
+└── web/             # Next.js frontend with React Query
 ```
 
 ## Technology Stack
