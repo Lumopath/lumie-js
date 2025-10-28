@@ -51,9 +51,11 @@ export const resolvers = {
         }
       });
 
+      console.log("allMetics: ", allMetrics.length);
+
       const companyMetrics = allMetrics.filter(m => m.companyName === companyName);
 
-      console.log('companyMetrics', companyMetrics.length);
+      console.log('companyMetrics: ', companyMetrics.length);
 
       const metricMap = new Map<string, any>();
 
