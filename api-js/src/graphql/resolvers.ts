@@ -53,6 +53,8 @@ export const resolvers = {
 
       const companyMetrics = allMetrics.filter(m => m.companyName === companyName);
 
+      console.log('companyMetrics', companyMetrics.length);
+
       const metricMap = new Map<string, any>();
 
       for (const metric of companyMetrics) {

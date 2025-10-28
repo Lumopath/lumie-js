@@ -18,6 +18,8 @@ out/
 *.db
 *.db-journal
 
+*.sqlite3-wal
+
 # Logs
 logs/
 *.log
