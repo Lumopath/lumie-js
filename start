@@ -2,6 +2,9 @@
 
 # Lumie JS Startup Script
 # This script installs dependencies, installs a process manager, and starts services
+# If GitHub Codespaces setup hasn't run yet, run below to fix LFS issues:
+#
+#    /bin/sh -c '$(ls ~/.vscode-remote/bin/*/node | head -n 1) /workspaces/.codespaces/shared/codespaceStatusTool.js'
 
 set -e
 
