@@ -88,13 +88,31 @@ export const resolvers = {
       return formatValue(parent.value, parent.unit);
     },
     recordedAt: (parent: any) => {
-      return new Date(parent.recordedAt).toISOString();
+      // Handle both ISO strings and numeric timestamps (as strings or numbers)
+      const value = parent.recordedAt;
+      if (typeof value === 'string' && !isNaN(Number(value))) {
+        // Numeric timestamp stored as string
+        return new Date(Number(value)).toISOString();
+      }
+      return new Date(value).toISOString();
     },
     createdAt: (parent: any) => {
-      return new Date(parent.createdAt).toISOString();
+      // Handle both ISO strings and numeric timestamps (as strings or numbers)
+      const value = parent.createdAt;
+      if (typeof value === 'string' && !isNaN(Number(value))) {
+        // Numeric timestamp stored as string
+        return new Date(Number(value)).toISOString();
+      }
+      return new Date(value).toISOString();
     },
     updatedAt: (parent: any) => {
-      return new Date(parent.updatedAt).toISOString();
+      // Handle both ISO strings and numeric timestamps (as strings or numbers)
+      const value = parent.updatedAt;
+      if (typeof value === 'string' && !isNaN(Number(value))) {
+        // Numeric timestamp stored as string
+        return new Date(Number(value)).toISOString();
+      }
+      return new Date(value).toISOString();
     }
   }
 };
