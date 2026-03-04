@@ -43,21 +43,49 @@ lumie-js/
 
 ### Prerequisites
 
+- **Git LFS** — the SQLite database (~287 MB) is stored with Git Large File Storage
 - Node.js 18+
 - npm or yarn
 
+Install Git LFS before cloning if you don't already have it:
+
+```bash
+# macOS
+brew install git-lfs
+
+# Ubuntu / Debian
+sudo apt-get install git-lfs
+
+# Then initialize (one-time setup)
+git lfs install
+```
+
 ### Setup
 
-1. **Clone the repository** (if not already done):
+1. **Clone the repository**:
 
    ```bash
-   cd /Users/yuta/Developer/lumie-js
+   git clone <repo-url>
+   cd lumie-js
+   ```
+
+   **Verify the database file was pulled correctly** — it should be close to 287 MB:
+
+   ```bash
+   ls -lh api-js/prisma/development.sqlite3
+   # Expected: ~287M
+   ```
+
+   If the file is only a few bytes or KB, Git LFS didn't pull the actual content. Fix it with:
+
+   ```bash
+   git lfs pull
    ```
 
 2. **Install dependencies and setup databases**:
 
    ```bash
-   npm run setup      # Installs deps and sets up both api-js and web
+   npm run setup      # Installs deps and sets up both api-js and web. Do not reset database!
    ```
 
 3. **Start both services** (recommended):
@@ -77,11 +105,11 @@ lumie-js/
 
    # Terminal 2 - Web
    cd web
-   npm run dev        # Start on http://localhost:3000
+   npm run dev        # Start on http://localhost:5100
    ```
 
 4. **Access the Application**:
-   - Frontend Dashboard: http://localhost:3000
+   - Frontend Dashboard: http://localhost:5100
    - GraphQL API: http://localhost:3001/graphql
    - SSE Stream: http://localhost:3001/stream
    - Health Check: http://localhost:3001/health

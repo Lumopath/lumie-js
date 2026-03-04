@@ -31,7 +31,7 @@ A modern business metrics dashboard built with Next.js 15, TypeScript, React Que
    npm run dev
    ```
 
-The app will be available at `http://localhost:3000`
+The app will be available at `http://localhost:5100`
 
 ## Available Scripts
 

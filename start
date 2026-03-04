@@ -185,7 +185,7 @@ else
 
     echo -e "\n${GREEN}✅ Both services started!${NC}"
     echo -e "  API:  ${GREEN}http://localhost:3001${NC}"
-    echo -e "  Web:  ${GREEN}http://localhost:3000${NC}"
+    echo -e "  Web:  ${GREEN}http://localhost:5100${NC}"
     echo -e "\n${YELLOW}Press Ctrl+C to stop all services${NC}\n"
 
     # Wait for all background jobs

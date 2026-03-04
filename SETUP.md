@@ -2,12 +2,47 @@
 
 This guide will help you get both the backend and frontend running in minutes.
 
+## Prerequisites
+
+- **Git LFS** — the SQLite database (~287 MB) is stored with Git Large File Storage. Install it **before cloning**:
+
+  ```bash
+  # macOS
+  brew install git-lfs
+
+  # Ubuntu / Debian
+  sudo apt-get install git-lfs
+
+  # Then initialize (one-time setup)
+  git lfs install
+  ```
+
+- Node.js 18+
+
+## Clone & Verify
+
+```bash
+git clone <repo-url>
+cd lumie-js
+```
+
+Verify `api-js/prisma/development.sqlite3` was pulled correctly — it should be close to 287 MB:
+
+```bash
+ls -lh api-js/prisma/development.sqlite3
+# Expected: ~287M
+```
+
+If the file is only a few bytes or KB, Git LFS didn't download the actual content. Run:
+
+```bash
+git lfs pull
+```
+
 ## One-Command Setup (Recommended)
 
 ```bash
-cd /Users/yuta/Developer/lumie-js
-
-# Install all dependencies and setup database
+# Install all dependencies and setup database. Do not reset database!
 npm run setup
 
 # Make start script executable
@@ -24,9 +59,9 @@ That's it! The `./start` script will run both the API and web frontend together.
 **What you'll see:**
 
 - API server starting at http://localhost:3001
-- Web frontend starting at http://localhost:3000
+- Web frontend starting at http://localhost:5100
 
-Open your browser to **http://localhost:3000** to view the dashboard!
+Open your browser to **http://localhost:5100** to view the dashboard!
 
 ---
 
@@ -77,17 +112,32 @@ You should see:
 
 ```
 ▲ Next.js 15.x.x
-- Local: http://localhost:3000
+- Local: http://localhost:5100
 ```
 
 ## Step 3: View the Dashboard
 
 Open your browser to:
 
-- **Dashboard**: http://localhost:3000
+- **Dashboard**: http://localhost:5100
 - **GraphQL Playground**: http://localhost:3001/graphql
 
 ## Troubleshooting
+
+### Database file is tiny or data is missing?
+
+The database is tracked with Git LFS. If `api-js/prisma/development.sqlite3` is only a few bytes instead of ~287 MB, LFS didn't pull the real file:
+
+```bash
+# Install Git LFS if needed, then pull
+brew install git-lfs   # or apt-get install git-lfs
+git lfs install
+git lfs pull
+
+# Confirm the file is the right size
+ls -lh api-js/prisma/development.sqlite3
+# Expected: ~287M
+```
 
 ### Backend won't start?
 
@@ -97,7 +147,7 @@ Open your browser to:
 
 ### Frontend won't start?
 
-1. Check if port 3000 is already in use
+1. Check if port 5100 is already in use
 2. Make sure the backend is running first
 3. Clear Next.js cache: `rm -rf .next`
 
